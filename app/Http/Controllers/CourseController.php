@@ -9,8 +9,8 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $students=Course::all();
-        return view('courses.coursesData',compact("students"));
+        $couCourses=Course::all();
+        return view('courses.coursesData',compact("couCourses"));
     }
 
     /**
@@ -18,7 +18,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        return view('couCourses.create');
     }
 
     /**
@@ -38,10 +38,10 @@ class CourseController extends Controller
       $img = $request->file('image');
       $ext = $img->getClientOriginalExtension();
       $name = uniqid() . '.' . $ext;
-      $img->move(public_path('uploads/students'), $name);
+      $img->move(public_path('uploads/couCourses'), $name);
 
 
-      Student::create([
+     Course::create([
        'name' => $request->name,
        'email' => $request->email,
        'address' => $request->address,
@@ -51,7 +51,7 @@ class CourseController extends Controller
       ]);
 
       
-      return to_route('students.index');
+      return to_route('couCourses.index');
 
       
      
@@ -67,8 +67,8 @@ class CourseController extends Controller
     
      function view($id)
      {
-       $student=Student::findOrFail($id);
-       return view('students.studentData',compact("student"));
+       $couCourse=Course::findOrFail($id);
+       return view('couCourses.couCourseData',compact("couCourse"));
      }
  
   
@@ -78,8 +78,8 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        $student=Student::findOrFail($id);
-        return view('students.update',compact("student"));
+        $couCourse=Course::findOrFail($id);
+        return view('couCourses.update',compact("couCourse"));
     }
 
     /**
@@ -96,19 +96,19 @@ class CourseController extends Controller
             'grade' => 'required',
         ]);
     
-        $student = Student::findOrFail($id);
+        $couCourse =Course::findOrFail($id);
     
        
         if ($request->hasFile('image')) {
             $img = $request->file('image');
             $ext = $img->getClientOriginalExtension();
             $name = uniqid() . '.' . $ext;
-            $img->move(public_path('uploads/students'), $name);
-            $student->image = $name;
+            $img->move(public_path('uploads/couCourses'), $name);
+            $couCourse->image = $name;
         }
     
        
-        $student->update([
+        $couCourse->update([
             'name' => $request->name,
             'email' => $request->email,
             'address' => $request->address,
@@ -117,9 +117,9 @@ class CourseController extends Controller
         ]);
     
        
-        $student->save();
+        $couCourse->save();
     
-        return redirect()->route('students.index');
+        return redirect()->route('couCourses.index');
     }
 
     /**
@@ -127,8 +127,8 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        $student=Student::findOrFail($id);
-         $student->delete();
-         return to_route('students.index');
+        $couCourse=Course::findOrFail($id);
+         $couCourse->delete();
+         return to_route('couCourses.index');
     }
 }
