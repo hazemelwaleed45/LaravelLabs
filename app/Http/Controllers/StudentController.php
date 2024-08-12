@@ -91,6 +91,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $request->validate([
             'name' => 'required',
             'address' => 'required',
@@ -100,14 +101,26 @@ class StudentController extends Controller
             'grade' => 'required',
         ]);
     
+     
         $student = Student::findOrFail($id);
     
        
         if ($request->hasFile('image')) {
+            
+            if ($student->image) {
+                $oldImagePath = public_path('uploads/students/' . $student->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+    
+           
             $img = $request->file('image');
             $ext = $img->getClientOriginalExtension();
             $name = uniqid() . '.' . $ext;
             $img->move(public_path('uploads/students'), $name);
+    
+           
             $student->image = $name;
         }
     
@@ -125,14 +138,28 @@ class StudentController extends Controller
     
         return redirect()->route('students.index');
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-        $student=Student::findOrFail($id);
-         $student->delete();
-         return to_route('students.index');
+       
+        $student = Student::findOrFail($id);
+    
+        if ($student->image) {
+         
+            $imagePath = public_path('uploads/students/' . $student->image);
+       
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        $student->delete();
+  
+        return to_route('students.index');
     }
+    
 }

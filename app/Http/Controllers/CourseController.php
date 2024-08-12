@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Course;
+use App\Models\Track;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
     public function index()
     {
-        $couCourses=Course::all();
-        return view('courses.coursesData',compact("couCourses"));
+        $courses=Course::orderBy('id',"asc")->paginate(5);
+        return view('courses.coursesData',compact("courses"));
     }
 
     /**
@@ -18,7 +20,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('couCourses.create');
+        return view('courses.create' , ['tracks' =>Track::all()]);
     }
 
     /**
@@ -28,35 +30,28 @@ class CourseController extends Controller
     {
 
        $request->validate([
-           'name' => 'required',
-           'address' => 'required',
-           'email' => 'required|email',
-           'gender' => 'required',
-           'image' => 'required|image',
-           'grade' => 'required',
-       ]);
-      $img = $request->file('image');
-      $ext = $img->getClientOriginalExtension();
-      $name = uniqid() . '.' . $ext;
-      $img->move(public_path('uploads/couCourses'), $name);
+           'name' => 'required|unique|min:3',
+           'totalgrade' => 'required',
+           'description' => 'required|min:50',
+           'track_id' => 'required',
+           
+       ],[
+        'name.unique'=>"this course name already exist",
+        'name.min'=>"track course must be more than 3",
+        'description.min'=>'this course description is short' ,
+        'totalgrade.required'=>'you must input the total Grade'
+    ]
+);
+    
 
 
      Course::create([
        'name' => $request->name,
-       'email' => $request->email,
-       'address' => $request->address,
-       'gender' => $request->gender,
-       'image' => $name,
-       'grade' => $request->grade,
+       'description' => $request->description,
+       'totalgrade' => $request->totalgrade,
+       'track_id' => $request->track_id,
       ]);
-
-      
-      return to_route('couCourses.index');
-
-      
-     
-
-
+      return to_route('courses.index');
     }
    
 
@@ -67,8 +62,8 @@ class CourseController extends Controller
     
      function view($id)
      {
-       $couCourse=Course::findOrFail($id);
-       return view('couCourses.couCourseData',compact("couCourse"));
+       $course=Course::findOrFail($id);
+       return view('courses.courseData',compact("course"));
      }
  
   
@@ -77,10 +72,12 @@ class CourseController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
-        $couCourse=Course::findOrFail($id);
-        return view('couCourses.update',compact("couCourse"));
-    }
+{
+    $course = Course::findOrFail($id);  
+    $tracks = Track::all();             
+
+    return view('courses.update', compact('course', 'tracks'));
+}
 
     /**
      * Update the specified resource in storage.
@@ -89,46 +86,44 @@ class CourseController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'address' => 'required',
-            'email' => 'required|email',
-            'gender' => 'required',
-            'image' => 'nullable|image',
-            'grade' => 'required',
+            'totalgrade' => 'required',
+            'description' => 'required',
+            'track_id' => 'required',
+            
+        ],[
+            'name.unique'=>"this course name already exist",
+            'name.min'=>"track course must be more than 3",
+            'description.min'=>'this course description is short' ,
+            'totalgrade.required'=>'you must input the total Grade'
         ]);
     
-        $couCourse =Course::findOrFail($id);
+        $Course =Course::findOrFail($id);
     
        
-        if ($request->hasFile('image')) {
-            $img = $request->file('image');
-            $ext = $img->getClientOriginalExtension();
-            $name = uniqid() . '.' . $ext;
-            $img->move(public_path('uploads/couCourses'), $name);
-            $couCourse->image = $name;
-        }
+       
     
        
-        $couCourse->update([
+        $Course->update([
             'name' => $request->name,
-            'email' => $request->email,
-            'address' => $request->address,
-            'gender' => $request->gender,
-            'grade' => $request->grade,
+            'description' => $request->description,
+            'totalgrade' => $request->totalgrade,
+            'track_id' => $request->track_id,
+           
         ]);
     
        
-        $couCourse->save();
+        $Course->save();
     
-        return redirect()->route('couCourses.index');
+        return redirect()->route('Courses.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy($id)
     {
-        $couCourse=Course::findOrFail($id);
-         $couCourse->delete();
-         return to_route('couCourses.index');
+        $course=Course::findOrFail($id);
+         $course->delete();
+         return to_route('courses.index');
     }
+
+   
 }
