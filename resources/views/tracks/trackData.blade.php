@@ -58,9 +58,11 @@
 
     @foreach ($courses as $course)
             <tr>
+        
                 <td>{{ $course->id }}</td>
                 <td>{{ $course->name }}</td>
                 <td>{{ $course->totalgrade }}</td>
+
             </tr>
             @endforeach
     </tbody>

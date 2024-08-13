@@ -10,10 +10,25 @@
 <body>
 <x-NAV>Students</x-NAV>
     <h1 class="text-center text-info m-5">Update {{$student->id}}</h1>
+
+    {{--
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
+
     <form class=" border p-2 bordered w-75 m-auto" method="post" action="{{route('students.update',$student->id)}}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
       
+        @error('name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
             
           <label for="exampleInputName1" class="form-label">Name </label>
@@ -22,6 +37,9 @@
         </div>
      
 
+        @error('email')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email address</label>
           <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -29,24 +47,36 @@
         </div>
        
 
+        @error('grade')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputgrade1" class="form-label">grade </label>
           <input name="grade" type="number" class="form-control" id="exampleInputgrade1" aria-describedby="gradeHelp">
         </div>
   
 
+        @error('image')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputImage1" class="form-label">Image </label>
           <input name="image" type="file" class="form-control" id="exampleInputImage1" aria-describedby="ImageHelp">
         </div>
        
 
+        @error('address')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputAddress1" class="form-label">Address </label>
           <input name="address" type="text" class="form-control" id="exampleInputAddress1" aria-describedby="AddressHelp">
         </div>
        
 
+        @error('gender')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <label class="form-check-label" for="flexRadioDefault1">
             Gender
           </label>

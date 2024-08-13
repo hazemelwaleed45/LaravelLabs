@@ -34,8 +34,27 @@ class TrackController extends Controller
     }
 
     function store( Request $request)
-    {
-      
+    { 
+        $request->validate([
+        'name' => 'required|unique|min:3',
+        'coursesnumber' => 'required',
+        'location' => 'required|unique',
+        'type' => 'required',
+        'phone' => 'required',
+        'image' => 'required',
+
+        
+    ],[
+        'name.unique'=>"this course name already exist",
+        'name.min'=>"track course must be more than 3",
+        'location.required'=>'Location is Required ' ,
+        'location.unique'=>'This Location is already exist ' ,
+        'coursesnumber.required'=>'you must input the Courses Number',
+        'type.required'=>'Type is Required only dotnet or php ' ,
+        'phone.required'=>'phone is Required ' ,
+        'image.required'=>'Image is Required ' ,
+
+    ]);
   
       $img = $request->file('image');
       $ext = $img->getClientOriginalExtension();
@@ -65,6 +84,26 @@ class TrackController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|unique|min:3',
+            'coursesnumber' => 'required',
+            'location' => 'required|unique',
+            'type' => 'required',
+            'phone' => 'required',
+            'image' => 'required',
+
+            
+        ],[
+            'name.unique'=>"this course name already exist",
+            'name.min'=>"track course must be more than 3",
+            'location.required'=>'Location is Required ' ,
+            'location.unique'=>'This Location is already exist ' ,
+            'coursesnumber.required'=>'you must input the Courses Number',
+            'type.required'=>'Type is Required only dotnet or php ' ,
+            'phone.required'=>'phone is Required ' ,
+            'image.required'=>'Image is Required ' ,
+
+        ]);
         $track = Track::findOrFail($id);
     
    

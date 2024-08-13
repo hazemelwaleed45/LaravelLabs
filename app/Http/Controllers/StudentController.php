@@ -32,13 +32,24 @@ class StudentController extends Controller
     {
 
        $request->validate([
-           'name' => 'required',
+           'name' => 'required|min:3',
            'address' => 'required',
-           'email' => 'required|email',
+           'email' => 'required|email|unique',
            'gender' => 'required',
            'image' => 'required|image',
            'grade' => 'required',
-       ]);
+       ],[
+        'name'=>"Enter The Name ",
+        'name.min'=>"track course must be more than 3",
+        'email.required'=>'Email is Required ' ,
+        'email.unique'=>'This Email is already exist ' ,
+        'email.email'=>'invalid Format ' ,
+        'address.required'=>'you must input Address',
+        'grade.required'=>'Must Enter Grade ' ,
+        'gender.required'=>'must Select your Gender ' ,
+        'image.required'=>'Image is Required ' ,
+
+    ]);
       $img = $request->file('image');
       $ext = $img->getClientOriginalExtension();
       $name = uniqid() . '.' . $ext;
@@ -93,13 +104,24 @@ class StudentController extends Controller
     {
         
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|min:3',
             'address' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique',
             'gender' => 'required',
-            'image' => 'nullable|image',
+            'image' => 'required|image',
             'grade' => 'required',
-        ]);
+        ],[
+         'name'=>"Enter The Name ",
+         'name.min'=>"track course must be more than 3",
+         'email.required'=>'Email is Required ' ,
+         'email.unique'=>'This Email is already exist ' ,
+         'email.email'=>'invalid Format ' ,
+         'address.required'=>'you must input Address',
+         'grade.required'=>'Must Enter Grade ' ,
+         'gender.required'=>'must Select your Gender ' ,
+         'image.required'=>'Image is Required ' ,
+ 
+     ]);
     
      
         $student = Student::findOrFail($id);

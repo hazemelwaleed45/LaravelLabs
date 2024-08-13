@@ -10,15 +10,32 @@
 <body>
 <x-NAV>Tracks</x-NAV>
     <h1 class="text-center text-bold m-5">Create New Track  </h1>
+    {{--
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif --}}
+
     <form class=" border p-2 bordered w-75 m-auto" method="post" action="{{route('tracks.store')}}" enctype="multipart/form-data" >
         @csrf
       
+        @error('name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputName1" class="form-label">Name </label>
           <input name="name" type="Name" class="form-control" id="exampleInputName1" aria-describedby="NameHelp">
 
         </div>
     
+        @error('location')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputLocation1" class="form-label">Location</label>
           <input name="location" type="text" class="form-control" id="exampleInputLocation1" aria-describedby="LocationHelp">
@@ -26,23 +43,35 @@
         </div>
         
 
+        @error('coursesnumber')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputCN1" class="form-label">Courses Number </label>
           <input name="coursesnumber" type="number" class="form-control" id="exampleInputCN1" aria-describedby="CNHelp">
         </div>
         
 
+        @error('type')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputType1" class="form-label">Type </label>
           <input name="type" type="text" class="form-control" id="exampleInputType1" aria-describedby="TypeHelp">
         </div>
 
+        @error('image')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputImage1" class="form-label">Image </label>
           <input name="image" type="file" class="form-control" id="exampleInputImage1" aria-describedby="ImageHelp">
         </div>
       
 
+        @error('phone')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <div class="mb-3">
           <label for="exampleInputphone1" class="form-label">phone </label>
           <input name="phone" type="text" class="form-control" id="exampleInputphone1" aria-describedby="phoneHelp">
