@@ -19,7 +19,7 @@
             <th scope="col">Name</th>
             <th scope="col">location</th>
             <th scope="col">Type</th>
-      
+            <th scope="col">Phone</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -41,12 +41,32 @@
 
                 </td>
             </tr>
-        
-
-
-
     </tbody>
 </table>
+
+<h1 class="text-bold w-50 mt-5 m-auto">Courses in {{$track->name}} Track</h1>
+    <table class="table w-75 m-auto table-bordered mt-5">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Total Grade</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+
+    @foreach ($courses as $course)
+            <tr>
+                <td>{{ $course->id }}</td>
+                <td>{{ $course->name }}</td>
+                <td>{{ $course->totalgrade }}</td>
+            </tr>
+            @endforeach
+    </tbody>
+</table>
+
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

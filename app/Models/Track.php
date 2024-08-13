@@ -11,4 +11,9 @@ class Track extends Model
     
     protected $fillable=['name','location','image','phone','type','coursesnumber'];
     use HasFactory;
+    public function courses()
+    {
+        return $this->hasMany(Course::class , 'track_id');
+        
+    }
 }

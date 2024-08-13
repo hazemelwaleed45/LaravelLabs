@@ -22,7 +22,8 @@ class TrackController extends Controller
     function view($id)
     {
       $track=Track::find($id);
-      return view('tracks.trackData',compact("track"));
+      $courses =$track->courses;
+      return view('tracks.trackData',compact("track" , "courses"));
     }
 
    
