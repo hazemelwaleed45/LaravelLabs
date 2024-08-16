@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Track;
 
+use Illuminate\Support\Facades\Validator;
+
 class TrackController extends Controller
 {
     function index()
@@ -19,11 +21,12 @@ class TrackController extends Controller
     }
 
 
-    function view($id)
+    function show($id)
     {
       $track=Track::find($id);
       $courses =$track->courses;
-      return view('tracks.trackData',compact("track" , "courses"));
+      $students =$track->students;
+      return view('tracks.trackData',compact("track" , "courses" , "students"));
     }
 
    
@@ -35,26 +38,29 @@ class TrackController extends Controller
 
     function store( Request $request)
     { 
-        $request->validate([
-        'name' => 'required|unique|min:3',
-        'coursesnumber' => 'required',
-        'location' => 'required|unique',
-        'type' => 'required',
-        'phone' => 'required',
-        'image' => 'required',
-
-        
-    ],[
-        'name.unique'=>"this course name already exist",
-        'name.min'=>"track course must be more than 3",
-        'location.required'=>'Location is Required ' ,
-        'location.unique'=>'This Location is already exist ' ,
-        'coursesnumber.required'=>'you must input the Courses Number',
-        'type.required'=>'Type is Required only dotnet or php ' ,
-        'phone.required'=>'phone is Required ' ,
-        'image.required'=>'Image is Required ' ,
-
-    ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:track,name|min:3',
+            'coursesnumber' => 'required',
+            'location' => 'required|unique:track,location',
+            'type' => 'required',
+            'phone' => 'required',
+            'image' => 'required|image',
+        ],[
+            'name.unique' => "This course name already exists",
+            'name.min' => "Track course name must be at least 3 characters",
+            'location.required' => 'Location is required',
+            'location.unique' => 'This location already exists',
+            'coursesnumber.required' => 'You must input the number of courses',
+            'type.required' => 'Type is required (e.g., .NET or PHP)',
+            'phone.required' => 'Phone is required',
+            'image.required' => 'Image is required',
+            'image.image' => 'The file must be an image',
+        ]);
+    
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
   
       $img = $request->file('image');
       $ext = $img->getClientOriginalExtension();
@@ -84,26 +90,29 @@ class TrackController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|unique|min:3',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:track,name|min:3',
             'coursesnumber' => 'required',
-            'location' => 'required|unique',
+            'location' => 'required|unique:track,location',
             'type' => 'required',
             'phone' => 'required',
-            'image' => 'required',
-
-            
+            'image' => 'required|image',
         ],[
-            'name.unique'=>"this course name already exist",
-            'name.min'=>"track course must be more than 3",
-            'location.required'=>'Location is Required ' ,
-            'location.unique'=>'This Location is already exist ' ,
-            'coursesnumber.required'=>'you must input the Courses Number',
-            'type.required'=>'Type is Required only dotnet or php ' ,
-            'phone.required'=>'phone is Required ' ,
-            'image.required'=>'Image is Required ' ,
-
+            'name.unique' => "This course name already exists",
+            'name.min' => "Track course name must be at least 3 characters",
+            'location.required' => 'Location is required',
+            'location.unique' => 'This location already exists',
+            'coursesnumber.required' => 'You must input the number of courses',
+            'type.required' => 'Type is required (e.g., .NET or PHP)',
+            'phone.required' => 'Phone is required',
+            'image.required' => 'Image is required',
+            'image.image' => 'The file must be an image',
         ]);
+    
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $track = Track::findOrFail($id);
     
    

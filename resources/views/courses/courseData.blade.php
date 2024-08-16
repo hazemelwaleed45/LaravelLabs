@@ -33,7 +33,7 @@
                 <td>{{ $course->name }}</td>
                 <td>{{ $course->description }}</td>
                 <td>{{ $course->totalgrade }}</td>
-                <td>{{ $course->track->name }}</td>
+                <td><a href="{{ route('tracks.view', $course->track->id ) }}" >{{ $course->track->name }}</a></td>
                 
                 
                 <td>

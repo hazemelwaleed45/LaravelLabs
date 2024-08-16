@@ -93,6 +93,15 @@
             </label>
           </div>
 
+          <div class="mb-3">
+          <label for="exampleInputType1" class="form-label">Track Name  </label>
+          <select name="track_id"  class="form-control" >
+            @foreach ($tracks as $track )
+                <option value="{{$track->id}}">{{$track->name}}</option>
+            @endforeach
+          </select>
+        </div>
+
 
         <button type="submit" class="btn btn-primary">Create</button>
       </form>

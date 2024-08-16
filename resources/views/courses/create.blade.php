@@ -53,11 +53,12 @@
           <input name="totalgrade" type="number" class="form-control" id="exampleInputCN1" aria-describedby="CNHelp">
         </div>
         
+        
         <div class="mb-3">
-          <label for="exampleInputType1" class="form-label">Track id  </label>
+          <label for="exampleInputType1" class="form-label">Track Name  </label>
           <select name="track_id"  class="form-control" >
             @foreach ($tracks as $track )
-                <option>{{$track->id}}</option>
+                <option value="{{$track->id}}">{{$track->name}}</option>
             @endforeach
           </select>
         </div>

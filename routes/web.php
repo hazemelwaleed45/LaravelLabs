@@ -40,7 +40,7 @@ Route::get('/userView/{id}',function($id)
 
  
  Route::get('/tracks',[TrackController::class,'index'])->name('tracks.index');
- Route::get('/tracks/{id}',[TrackController::class,'view'])->name('tracks.view');
+ Route::get('/tracks/{id}',[TrackController::class,'show'])->name('tracks.view');
 
 Route::delete('/tracks/{id}', [TrackController::class, 'destroy'])->name('tracks.destroy');
 
@@ -56,7 +56,7 @@ Route::get('/tracks/{id}/create',[TrackController::class,'create'])->name('track
 
 Route::get('/students/{id}/create',[StudentController::class,'create'])->name('students.create');
 Route::get('/students',[StudentController::class,'index'])->name('students.index');
-Route::get('/students/{id}',[StudentController::class,'view'])->name('students.view');
+Route::get('/students/{id}',[StudentController::class,'show'])->name('students.view');
 Route::delete('/students/{id}',[StudentController::class,'destroy'])->name('students.destroy');
 Route::post('/students/store',[StudentController::class,'store'])->name('students.store');
 
@@ -69,7 +69,7 @@ Route::put('/students/{id}/update',[StudentController::class,'update'])->name('s
 
 Route::get('/courses/{id}/create',[CourseController::class,'create'])->name('courses.create');
 Route::get('/courses',[CourseController::class,'index'])->name('courses.index');
-Route::get('/courses/{id}',[CourseController::class,'view'])->name('courses.view');
+Route::get('/courses/{id}',[CourseController::class,'show'])->name('courses.view');
 Route::delete('/courses/{id}',[CourseController::class,'destroy'])->name('courses.destroy');
 Route::post('/courses/store',[CourseController::class,'store'])->name('courses.store');
 

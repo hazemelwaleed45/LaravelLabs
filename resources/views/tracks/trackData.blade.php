@@ -45,6 +45,9 @@
 </table>
 
 <h1 class="text-bold w-50 mt-5 m-auto">Courses in {{$track->name}} Track</h1>
+@if (count($courses)>0)
+    
+
     <table class="table w-75 m-auto table-bordered mt-5">
     <thead>
         <tr>
@@ -67,6 +70,50 @@
             @endforeach
     </tbody>
 </table>
+@endif 
+@if (count($courses)== 0)
+<h3 class="text-center p-5 m-5 text-danger"> this Track has no Courses </h3>
+@endif
+
+<h1 class="text-bold w-50 mt-5 m-auto">Students in {{$track->name}} Track</h1>
+@if (count($students)>0)
+    
+
+    <table class="table w-75 m-auto table-bordered mt-5">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Profile</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+
+    @foreach ($students as $student)
+            <tr>
+        
+                <td>{{ $student->id }}</td>
+                <td>
+                    @if($student->image)
+                        <img src="{{ asset('uploads/students/' . $student->image) }}" alt="Student Image" style="width: 40px; border-radius: 50%; height: auto;">
+                    @else
+                        No Image
+                    @endif
+                </td>
+                <td>{{ $student->name }}</td>
+                <td>{{ $student->email }}</td>
+
+            </tr>
+            @endforeach
+    </tbody>
+</table>
+@endif 
+@if (count($students)== 0)
+<h3 class="text-center p-5 m-5 text-danger"> this Track has no Student </h3>
+@endif
+
 
 
 

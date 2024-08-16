@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Track;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
@@ -29,19 +30,23 @@ class CourseController extends Controller
     function store( Request $request)
     {
 
-       $request->validate([
-           'name' => 'required|unique|min:3',
-           'totalgrade' => 'required',
-           'description' => 'required|min:50',
-           'track_id' => 'required',
-           
-       ],[
-        'name.unique'=>"this course name already exist",
-        'name.min'=>"track course must be more than 3",
-        'description.min'=>'this course description is short' ,
-        'totalgrade.required'=>'you must input the total Grade'
-    ]
-);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:courses,name|min:3',
+            'totalgrade' => 'required',
+            'description' => 'required|min:50',
+            'track_id' => 'required',
+        ],[
+            'name.unique' => "This course name already exists",
+            'name.min' => "Course name must be at least 3 characters",
+            'description.min' => 'The course description is too short',
+            'totalgrade.required' => 'You must input the total grade',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
     
 
 
@@ -60,7 +65,7 @@ class CourseController extends Controller
      */
 
     
-     function view($id)
+     function show($id)
      {
        $course=Course::findOrFail($id);
        return view('courses.courseData',compact("course"));
@@ -84,18 +89,23 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|unique|min:3',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:courses,name|min:3',
             'totalgrade' => 'required',
             'description' => 'required|min:50',
             'track_id' => 'required',
-            
         ],[
-            'name.unique'=>"this course name already exist",
-            'name.min'=>"track course must be more than 3",
-            'description.min'=>'this course description is short' ,
-            'totalgrade.required'=>'you must input the total Grade'
+            'name.unique' => "This course name already exists",
+            'name.min' => "Course name must be at least 3 characters",
+            'description.min' => 'The course description is too short',
+            'totalgrade.required' => 'You must input the total grade',
         ]);
+        
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
     
         $Course =Course::findOrFail($id);
     

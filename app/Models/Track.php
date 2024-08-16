@@ -16,4 +16,10 @@ class Track extends Model
         return $this->hasMany(Course::class , 'track_id');
         
     }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class , 'track_id');
+        
+    }
 }

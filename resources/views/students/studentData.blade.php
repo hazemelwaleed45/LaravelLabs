@@ -21,6 +21,7 @@
             <th scope="col">gender</th>
             <th scope="col">email</th>
             <th scope="col">grade</th>
+            <th scope="col">Track</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -44,6 +45,7 @@
                 </td> -->
                 <td>{{ $student->email }}</td>
                 <td>{{ $student->grade }}</td>
+                <td><a href="{{ route('tracks.view', $student->track->id ) }}" >{{ $student->track->name }}</a></td>
                 <td>
                    <a href="{{route('students.index')}}">
                      <x-btn class="btn btn-warning">Back</x-btn>

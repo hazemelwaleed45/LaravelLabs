@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
+use App\Models\Track;
 use App\Models\Student;
 
 class StudentController extends Controller
@@ -13,7 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students=Student::all();
+        $students=Student::orderBy('id',"asc")->paginate(8);
         return view('students.studentsData',compact("students"));
     }
 
@@ -22,7 +24,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        return view('students.create' ,  ['tracks' =>Track::all()]);
     }
 
     /**
@@ -31,25 +33,31 @@ class StudentController extends Controller
     function store( Request $request)
     {
 
-       $request->validate([
-           'name' => 'required|min:3',
-           'address' => 'required',
-           'email' => 'required|email|unique',
-           'gender' => 'required',
-           'image' => 'required|image',
-           'grade' => 'required',
-       ],[
-        'name'=>"Enter The Name ",
-        'name.min'=>"track course must be more than 3",
-        'email.required'=>'Email is Required ' ,
-        'email.unique'=>'This Email is already exist ' ,
-        'email.email'=>'invalid Format ' ,
-        'address.required'=>'you must input Address',
-        'grade.required'=>'Must Enter Grade ' ,
-        'gender.required'=>'must Select your Gender ' ,
-        'image.required'=>'Image is Required ' ,
-
-    ]);
+        // @dd($request);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3',
+            'address' => 'required',
+            'email' => 'required|email|unique:students,email',
+            'gender' => 'required',
+            'image' => 'required|image',
+            'grade' => 'required',
+        ], [
+            'name.required' => "Enter The Name",
+            'name.min' => "Name must be at least 3 characters",
+            'email.required' => 'Email is Required',
+            'email.unique' => 'This Email is already exist',
+            'email.email' => 'Invalid Format',
+            'address.required' => 'You must input Address',
+            'grade.required' => 'Must Enter Grade',
+            'gender.required' => 'You must select your Gender',
+            'image.required' => 'Image is Required',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
       $img = $request->file('image');
       $ext = $img->getClientOriginalExtension();
       $name = uniqid() . '.' . $ext;
@@ -63,13 +71,9 @@ class StudentController extends Controller
        'gender' => $request->gender,
        'image' => $name,
        'grade' => $request->grade,
+       'track_id'=>$request->track_id ,
       ]);
-
-      
       return to_route('students.index');
-
-      
-     
 
 
     }
@@ -80,7 +84,7 @@ class StudentController extends Controller
      */
 
     
-     function view($id)
+     function show($id)
      {
        $student=Student::findOrFail($id);
        return view('students.studentData',compact("student"));
@@ -103,25 +107,30 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
             'address' => 'required',
-            'email' => 'required|email|unique',
+            'email' => 'required|email|unique:students,email',
             'gender' => 'required',
             'image' => 'required|image',
             'grade' => 'required',
-        ],[
-         'name'=>"Enter The Name ",
-         'name.min'=>"track course must be more than 3",
-         'email.required'=>'Email is Required ' ,
-         'email.unique'=>'This Email is already exist ' ,
-         'email.email'=>'invalid Format ' ,
-         'address.required'=>'you must input Address',
-         'grade.required'=>'Must Enter Grade ' ,
-         'gender.required'=>'must Select your Gender ' ,
-         'image.required'=>'Image is Required ' ,
- 
-     ]);
+        ], [
+            'name.required' => "Enter The Name",
+            'name.min' => "Name must be at least 3 characters",
+            'email.required' => 'Email is Required',
+            'email.unique' => 'This Email is already exist',
+            'email.email' => 'Invalid Format',
+            'address.required' => 'You must input Address',
+            'grade.required' => 'Must Enter Grade',
+            'gender.required' => 'You must select your Gender',
+            'image.required' => 'Image is Required',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
     
      
         $student = Student::findOrFail($id);
