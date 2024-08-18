@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CourseResource extends JsonResource
 {
+    // Resource is a transformation layer to fullter the output ^_^
     /**
      * Transform the resource into an array.
      *
